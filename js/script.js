@@ -104,6 +104,45 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // ---------- Design option dot navigation ----------
+  document.querySelectorAll(".option-dots").forEach((nav) => {
+    const dots = Array.from(nav.querySelectorAll(".dot"));
+    const optionSlides = Array.from(document.querySelectorAll(".option-slide.slide"));
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (isAnimating) return;
+        const slides = getSlides();
+        const idx = slides.indexOf(optionSlides[i]);
+        if (idx !== -1) goToSlide(idx, slides);
+      });
+    });
+
+    const updateActiveDot = () => {
+      const slides = getSlides();
+      const currentEl = slides[currentSlideIndex(slides)];
+      const activeIdx = optionSlides.indexOf(currentEl);
+      dots.forEach((dot, i) => dot.classList.toggle("active", i === activeIdx));
+    };
+
+    let ticking = false;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          updateActiveDot();
+          ticking = false;
+        });
+      },
+      { passive: true }
+    );
+
+    updateActiveDot();
+  });
+
   // ---------- Greening slider (crossfade between staged images with magnetic snap) ----------
   document.querySelectorAll(".greening-slider").forEach((slider) => {
     const stack = slider.closest(".option-slide").querySelector(".greening-stack");
@@ -129,6 +168,34 @@ document.addEventListener("DOMContentLoaded", () => {
       return Math.abs(value - nearest) < snapZone ? nearest : value;
     };
 
+    const nearestCheckpoint = (value) => Math.round(value / stepSize) * stepSize;
+
+    let settleFrame = null;
+
+    const settleToNearest = () => {
+      const start = Number(slider.value);
+      const target = nearestCheckpoint(start);
+      const distance = target - start;
+      if (Math.abs(distance) < 0.5) {
+        slider.value = String(target);
+        render(target);
+        return;
+      }
+      const duration = 260;
+      const startTime = performance.now();
+      cancelAnimationFrame(settleFrame);
+      const step = (now) => {
+        const t = Math.min((now - startTime) / duration, 1);
+        const value = start + distance * easeInOutCubic(t);
+        slider.value = String(value);
+        render(value);
+        if (t < 1) {
+          settleFrame = requestAnimationFrame(step);
+        }
+      };
+      settleFrame = requestAnimationFrame(step);
+    };
+
     slider.addEventListener("input", () => {
       const magnetized = applyMagnetism(Number(slider.value));
       if (magnetized !== Number(slider.value)) {
@@ -136,6 +203,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       render(Number(slider.value));
     });
+
+    // Guarantees the image never rests on a mid-blend: whenever the user
+    // releases the slider (mouse/touch/keyboard), it settles on whichever
+    // staged image it was closest to.
+    slider.addEventListener("change", settleToNearest);
 
     render(Number(slider.value));
   });
