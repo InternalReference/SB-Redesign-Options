@@ -208,11 +208,19 @@ a {
   color: #14151a;
 }
 
-/* ---------- Hero (original render) ---------- */
-.hero {
+/* ---------- Hero + design option slides (full-bleed image treatment) ---------- */
+.hero,
+.option-slide {
   position: relative;
-  height: 92vh;
   overflow: hidden;
+}
+
+.hero {
+  height: 92vh;
+}
+
+.option-slide {
+  min-height: 100vh;
 }
 
 .hero-media {
@@ -249,65 +257,32 @@ a {
   font-size: 0.85rem;
 }
 
-/* ---------- Design options ---------- */
-.option-slide {
+@media (max-width: 860px) {
+  .hero-caption { left: 24px; bottom: 32px; }
+}
+
+/* ---------- Closing slide (return to menu) ---------- */
+.closing {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  position: relative;
-  padding: 80px 60px;
+  justify-content: center;
 }
 
-.option-block {
-  width: 100%;
-  max-width: 1300px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-  gap: 60px;
-  align-items: center;
+.menu-return-btn {
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: var(--bg-alt);
+  padding: 24px 56px;
+  border-radius: 999px;
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
+  letter-spacing: 0.05em;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
 }
 
-.option-block.reverse {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-}
-
-.option-block.reverse .option-media {
-  order: 2;
-}
-
-.option-media {
-  aspect-ratio: 4 / 3;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.option-text .eyebrow {
-  color: var(--accent);
-  font-size: 0.8rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin: 0 0 12px;
-}
-
-.option-text h2 {
-  font-size: clamp(1.4rem, 2.4vw, 2rem);
-  margin: 0 0 16px;
-}
-
-.option-text p {
-  color: var(--text-dim);
-  line-height: 1.7;
-  font-size: 1rem;
-}
-
-@media (max-width: 860px) {
-  .option-slide { padding: 100px 28px 60px; }
-  .option-block,
-  .option-block.reverse {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 28px;
-  }
-  .option-block.reverse .option-media { order: 0; }
-  .hero-caption { left: 24px; bottom: 32px; }
+.menu-return-btn:hover {
+  background: var(--accent);
+  color: #14151a;
+  transform: scale(1.04);
 }
