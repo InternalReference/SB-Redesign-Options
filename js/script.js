@@ -103,4 +103,40 @@ document.addEventListener("DOMContentLoaded", () => {
       goToSlide(currentSlideIndex(slides) + 1, slides);
     });
   });
+
+  // ---------- Greening slider (crossfade between staged images with magnetic snap) ----------
+  document.querySelectorAll(".greening-slider").forEach((slider) => {
+    const stack = slider.closest(".option-slide").querySelector(".greening-stack");
+    const images = Array.from(stack.querySelectorAll(".greening-img"));
+    const segments = images.length - 1;
+    const MAX = Number(slider.max);
+    const stepSize = MAX / segments;
+    const snapZone = stepSize * 0.12;
+
+    const render = (value) => {
+      const t = (value / MAX) * segments;
+      const idx = Math.min(Math.floor(t), segments - 1);
+      const localT = t - idx;
+      images.forEach((img) => {
+        img.style.opacity = 0;
+      });
+      images[idx].style.opacity = String(1 - localT);
+      images[idx + 1].style.opacity = String(localT);
+    };
+
+    const applyMagnetism = (value) => {
+      const nearest = Math.round(value / stepSize) * stepSize;
+      return Math.abs(value - nearest) < snapZone ? nearest : value;
+    };
+
+    slider.addEventListener("input", () => {
+      const magnetized = applyMagnetism(Number(slider.value));
+      if (magnetized !== Number(slider.value)) {
+        slider.value = String(magnetized);
+      }
+      render(Number(slider.value));
+    });
+
+    render(Number(slider.value));
+  });
 });
