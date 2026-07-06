@@ -212,42 +212,43 @@ document.addEventListener("DOMContentLoaded", () => {
     render(Number(slider.value));
   });
 
-  // ---------- Material / seating configurator (Congress Hall) ----------
-  const MATERIAL_NAMES = {
-    aluminium: "Brushed Aluminium",
-    brass: "Brushed Brass",
-    copper: "Brushed Copper",
-    sycamore: "Sycamore",
-  };
-  const SEAT_NAMES = {
-    cream: "Cream",
-    burgundy: "Burgundy",
-    darkbrown: "Dark Brown",
-  };
-
+  // ---------- Material configurator (Congress Hall + Atrium) ----------
+  // Generic: works for a Finish-only picker (Atrium) or a Finish + Seating
+  // matrix (Congress Hall). Display names come from each swatch's label, and
+  // an optional data-selection-prefix prepends a section name to the caption.
   document.querySelectorAll(".config-panel").forEach((panel) => {
     const slide = panel.closest(".option-slide");
     const images = Array.from(slide.querySelectorAll(".config-img"));
     const selectionLabel = panel.querySelector(".config-selection");
+    const prefix = panel.dataset.selectionPrefix || "";
     const materialSwatches = Array.from(panel.querySelectorAll(".swatch--material"));
     const seatSwatches = Array.from(panel.querySelectorAll(".swatch--seat"));
+    const hasSeat = seatSwatches.length > 0;
 
-    const state = { material: "aluminium", seat: "burgundy" };
+    const nameOf = (swatch) => (swatch ? swatch.querySelector(".swatch-name").textContent.trim() : "");
+    const activeOr0 = (swatches) => swatches.find((s) => s.classList.contains("is-active")) || swatches[0];
+
+    const state = {
+      material: activeOr0(materialSwatches).dataset.material,
+      seat: hasSeat ? activeOr0(seatSwatches).dataset.seat : null,
+    };
 
     const findImage = (material, seat) =>
-      images.find((img) => img.dataset.material === material && img.dataset.seat === seat);
+      images.find(
+        (img) => img.dataset.material === material && (!hasSeat || img.dataset.seat === seat)
+      );
 
     const update = () => {
-      // Show the exact material + seat render if it exists; until the full
-      // matrix is generated, fall back to that material's burgundy render so
-      // the finish still changes live, and flag the seat colour as pending.
-      const exact = findImage(state.material, state.seat);
-      const target = exact || findImage(state.material, "burgundy");
-      images.forEach((img) => img.classList.toggle("is-active", img === target));
+      const target = findImage(state.material, state.seat);
+      if (target) images.forEach((img) => img.classList.toggle("is-active", img === target));
 
-      const pending = !exact;
-      const seatText = SEAT_NAMES[state.seat] + (pending ? " seating — render coming soon" : " seating");
-      selectionLabel.textContent = MATERIAL_NAMES[state.material] + " · " + seatText;
+      const materialSwatch = materialSwatches.find((s) => s.dataset.material === state.material);
+      let text = prefix + nameOf(materialSwatch);
+      if (hasSeat) {
+        const seatSwatch = seatSwatches.find((s) => s.dataset.seat === state.seat);
+        text += " · " + nameOf(seatSwatch) + " seating";
+      }
+      selectionLabel.textContent = text;
 
       materialSwatches.forEach((s) =>
         s.classList.toggle("is-active", s.dataset.material === state.material)

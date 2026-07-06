@@ -11,10 +11,8 @@
 <a href="index.html#menu" class="back-btn">&larr; Main Menu</a>
 
 <nav class="option-dots" aria-label="Design option navigation">
-  <a href="#" class="dot" aria-label="Design Option 1"></a>
-  <a href="#" class="dot" aria-label="Design Option 2"></a>
-  <a href="#" class="dot" aria-label="Design Option 3"></a>
-  <a href="#" class="dot" aria-label="Design Option 4"></a>
+  <a href="#" class="dot" aria-label="Greening Possibilities"></a>
+  <a href="#" class="dot" aria-label="Design Alternatives"></a>
 </nav>
 
 <section class="hero slide">
@@ -43,7 +41,7 @@
   <div class="hero-scrim"></div>
   <div class="hero-caption">
     <h1>Atrium</h1>
-    <p>Design Option 1</p>
+    <p>Greening Possibilities</p>
   </div>
   <div class="greening-control">
     <span class="greening-label">Slide to Green</span>
@@ -55,39 +53,44 @@
   </a>
 </section>
 
-<section class="option-slide slide">
-  <div class="hero-media"><img class="media-img" src="images/atrium-option-2.png" alt="Atrium — Design Option 2" /></div>
-  <div class="hero-scrim"></div>
-  <div class="hero-caption">
-    <h1>Atrium</h1>
-    <p>Design Option 2</p>
+<section class="option-slide slide config-slide">
+  <div class="hero-media">
+    <div class="config-stack">
+      <img class="media-img config-img is-active" src="images/atrium-sycamore.png" data-material="sycamore" alt="Atrium — Sycamore finish" />
+      <img class="media-img config-img" src="images/atrium-aluminium.png" data-material="aluminium" alt="Atrium — Aluminium finish" />
+      <img class="media-img config-img" src="images/atrium-copper-aluminium.png" data-material="copper-aluminium" alt="Atrium — Copper–Aluminium Gradient finish" />
+      <img class="media-img config-img" src="images/atrium-3d-printing.png" data-material="3d-printing" alt="Atrium — 3D Printing finish" />
+    </div>
   </div>
-  <a href="#" class="scroll-cue">
-    <span>Scroll</span>
-    <span class="arrow"></span>
-  </a>
-</section>
+  <div class="hero-scrim"></div>
 
-<section class="option-slide slide">
-  <div class="hero-media"><img class="media-img" src="images/atrium-option-3.png" alt="Atrium — Design Option 3" /></div>
-  <div class="hero-scrim"></div>
-  <div class="hero-caption">
+  <div class="config-panel" data-selection-prefix="Design Alternatives &middot; ">
     <h1>Atrium</h1>
-    <p>Design Option 3</p>
-  </div>
-  <a href="#" class="scroll-cue">
-    <span>Scroll</span>
-    <span class="arrow"></span>
-  </a>
-</section>
+    <p class="config-selection">Design Alternatives &middot; Sycamore</p>
 
-<section class="option-slide slide">
-  <div class="hero-media"><img class="media-img" src="images/atrium-option-4.png" alt="Atrium — Design Option 4" /></div>
-  <div class="hero-scrim"></div>
-  <div class="hero-caption">
-    <h1>Atrium</h1>
-    <p>Design Option 4</p>
+    <div class="config-group">
+      <span class="config-group-label">Finish</span>
+      <div class="config-swatches">
+        <button type="button" class="swatch swatch--material is-active" data-material="sycamore">
+          <span class="swatch-dot" style="--chip:linear-gradient(135deg,#d8c39a,#b2946a)"></span>
+          <span class="swatch-name">Sycamore</span>
+        </button>
+        <button type="button" class="swatch swatch--material" data-material="aluminium">
+          <span class="swatch-dot" style="--chip:linear-gradient(135deg,#dde0e4,#a6aab0)"></span>
+          <span class="swatch-name">Aluminium</span>
+        </button>
+        <button type="button" class="swatch swatch--material" data-material="copper-aluminium">
+          <span class="swatch-dot" style="--chip:linear-gradient(135deg,#c67b52,#dde0e4)"></span>
+          <span class="swatch-name">Copper&ndash;Aluminium Gradient</span>
+        </button>
+        <button type="button" class="swatch swatch--material" data-material="3d-printing">
+          <span class="swatch-dot" style="--chip:linear-gradient(135deg,#f2f0ea,#c9c5bc)"></span>
+          <span class="swatch-name">3D Printing</span>
+        </button>
+      </div>
+    </div>
   </div>
+
   <a href="#" class="scroll-cue">
     <span>Scroll</span>
     <span class="arrow"></span>
