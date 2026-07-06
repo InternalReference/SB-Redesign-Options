@@ -211,4 +211,65 @@ document.addEventListener("DOMContentLoaded", () => {
 
     render(Number(slider.value));
   });
+
+  // ---------- Material / seating configurator (Congress Hall) ----------
+  const MATERIAL_NAMES = {
+    aluminium: "Brushed Aluminium",
+    brass: "Brushed Brass",
+    copper: "Brushed Copper",
+    sycamore: "Sycamore",
+  };
+  const SEAT_NAMES = {
+    cream: "Cream",
+    burgundy: "Burgundy",
+    darkbrown: "Dark Brown",
+  };
+
+  document.querySelectorAll(".config-panel").forEach((panel) => {
+    const slide = panel.closest(".option-slide");
+    const images = Array.from(slide.querySelectorAll(".config-img"));
+    const selectionLabel = panel.querySelector(".config-selection");
+    const materialSwatches = Array.from(panel.querySelectorAll(".swatch--material"));
+    const seatSwatches = Array.from(panel.querySelectorAll(".swatch--seat"));
+
+    const state = { material: "aluminium", seat: "burgundy" };
+
+    const findImage = (material, seat) =>
+      images.find((img) => img.dataset.material === material && img.dataset.seat === seat);
+
+    const update = () => {
+      // Show the exact material + seat render if it exists; until the full
+      // matrix is generated, fall back to that material's burgundy render so
+      // the finish still changes live, and flag the seat colour as pending.
+      const exact = findImage(state.material, state.seat);
+      const target = exact || findImage(state.material, "burgundy");
+      images.forEach((img) => img.classList.toggle("is-active", img === target));
+
+      const pending = !exact;
+      const seatText = SEAT_NAMES[state.seat] + (pending ? " seating — render coming soon" : " seating");
+      selectionLabel.textContent = MATERIAL_NAMES[state.material] + " · " + seatText;
+
+      materialSwatches.forEach((s) =>
+        s.classList.toggle("is-active", s.dataset.material === state.material)
+      );
+      seatSwatches.forEach((s) => s.classList.toggle("is-active", s.dataset.seat === state.seat));
+    };
+
+    materialSwatches.forEach((s) =>
+      s.addEventListener("click", (e) => {
+        e.preventDefault();
+        state.material = s.dataset.material;
+        update();
+      })
+    );
+    seatSwatches.forEach((s) =>
+      s.addEventListener("click", (e) => {
+        e.preventDefault();
+        state.seat = s.dataset.seat;
+        update();
+      })
+    );
+
+    update();
+  });
 });
