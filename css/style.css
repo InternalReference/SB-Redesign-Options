@@ -328,22 +328,20 @@ a {
   opacity: 0;
 }
 
-.greening-slide .hero-caption,
-.greening-slide .scroll-cue {
-  bottom: 132px;
-}
-
 .greening-control {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: 48px;
+  right: 48px;
+  bottom: 150px;
   z-index: 3;
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding: 26px 48px 36px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+  gap: 20px;
+  padding: 14px 26px;
+  background: rgba(14, 15, 18, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 999px;
 }
 
 .greening-label {
@@ -405,11 +403,7 @@ a {
 }
 
 @media (max-width: 860px) {
-  .greening-control { padding: 16px 24px 22px; gap: 14px; }
-  .greening-slide .hero-caption,
-  .greening-slide .scroll-cue {
-    bottom: 104px;
-  }
+  .greening-control { left: 24px; right: 24px; bottom: 120px; padding: 12px 18px; gap: 12px; }
 }
 
 /* ---------- Closing slide (return to menu) ---------- */
